@@ -35,15 +35,21 @@ df.loc[~df["english"].between(0, 100), "english"] = float("nan")
 
 # 填補缺失值：使用各科平均
 df["math"] = df["math"].fillna(df["math"].mean())
+df["english"] = df["english"].fillna(df["english"].mean())# 使用各科平均分數填補缺失值，避免刪除學生資料，
+# 也能讓缺失的成績有合理的數值可供後續分析。
+df["math"] = df["math"].fillna(df["math"].mean())
 df["english"] = df["english"].fillna(df["english"].mean())
 
 # 查看清理後的資料
 print("\n清理後的資料：")
 print(df)
 
-print("\n清理後的缺失值數量：")
-print(df.isna().sum())
+print("\n清理後的重複資料數量：")
+print(df.duplicated(subset=["name", "math", "english"]).sum())
 # 匯出清理後的資料
 df.to_csv("cleaned_students.csv", index=False)
-
+# 比較清理前後的資料
+print("\n清理後的資料筆數：", df.shape)
+print("\n清理後的統計資料：")
+print(df.describe())
 print("\n清理完成！已輸出 cleaned_students.csv")
